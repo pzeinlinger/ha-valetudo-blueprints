@@ -101,7 +101,7 @@ condition:
       - condition: trigger
         id: cleaning_finished
       - condition: not
-        conitions:
+        conditions:
           - condition: state
             entity_id: !input status_flag
             state: 'resumable'
