@@ -30,6 +30,14 @@ blueprint:
                 domain: sensor
                 integration: mqtt
                 multiple: false
+    status_flag:
+        name: Status Flag
+        description: The sensor containing the last status flag.
+        selector:
+            entity:
+                domain: sensor
+                integration: mqtt
+                multiple: false
     dashboard_url:
         name: Dashboard URL
         description: The dashboard that should be opened when tapping on the notification.
@@ -88,8 +96,15 @@ condition:
   - condition: or
     alias: "Finished cleaning task or error message is not empty"
     conditions:
-    - condition: trigger
-      id: cleaning_finished
+    - condition: and
+      conditions:
+      - condition: trigger
+        id: cleaning_finished
+      - condition: not
+        conitions:
+          - condition: state
+            entity_id: !input status_flag
+            state: 'resumable'
     - condition: not
       conditions:
         - condition: state
